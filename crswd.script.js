@@ -1,5 +1,5 @@
 // A javascript-enhanced crossword puzzle [c] Jesse Weisbeck, MIT/GPL 
-(function($) {
+var crswd = (function($) {
 	$(function() {
 		// provide crossword entries in an array of objects like the following example
 		// Position refers to the numerical order of an entry. Each position can have 
@@ -150,9 +150,57 @@
 					starty: 9
 				}
 			] 
-	
-		$('#puzzle-wrapper').crossword(puzzleData);
+
+		$('#puzzle-wrapper').CrosswordDemo(puzzleData);
 		
 	})
+
+    var state = {
+        'answeredAll' : true
+    },
+    channel;
+
+    if (window.parent !== window) {
+        channel = Channel.build({
+            window: window.parent,
+            origin: "*",
+            scope: "JSInput"
+        });
+
+        channel.bind("getGrade", getGrade);
+        channel.bind("getState", getState);
+        channel.bind("setState", setState);
+    }
+
+    function getGrade() {
+        // The following return value may or may not be used to grade
+        // server-side.
+        // If getState and setState are used, then the Python grader also gets
+        // access to the return value of getState and can choose it instead to
+        // grade.
+        console.log("hihi");
+        return JSON.stringify(state['answeredAll']);
+    }
+
+    function getState() {
+        console.log("hihi2");
+        return JSON.stringify(state);
+    }
+
+    // This function will be called with 1 argument when JSChannel is not used,
+    // 2 otherwise. In the latter case, the first argument is a transaction
+    // object that will not be used here
+    // (see http://mozilla.github.io/jschannel/docs/)
+    function setState() {
+        console.log("hihi3");
+        stateStr = arguments.length === 1 ? arguments[0] : arguments[1];
+        state = JSON.parse(stateStr);
+    }
+
+    return {
+        getState: getState,
+        setState: setState,
+        getGrade: getGrade
+    };  
 	
 })(jQuery)

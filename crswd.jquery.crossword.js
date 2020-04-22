@@ -4,7 +4,7 @@
 *
 */
 (function($){
-	$.fn.crossword = function(entryData) {
+	$.fn.CrosswordDemo = function(entryData) {
 			/*
 				Qurossword Puzzle: a javascript + jQuery crossword puzzle
 				"light" refers to a white box - or an input
@@ -544,10 +544,8 @@
 				}
 				
 			}; // end util object
-
 				
 			puzInit.init();
-	
 							
 	}
 	
