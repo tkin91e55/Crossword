@@ -3,6 +3,11 @@ var crswd = (function($) {
 
     var helder;
     var puzzleData;
+    //variable name state is occupied after returning the CrosswordDemo
+    var stateJson = {
+        'answeredAll' : false
+    },
+    channel;
 
     console.log("crosswordDemo init");
 
@@ -35,11 +40,6 @@ var crswd = (function($) {
 		
 	})
 
-    var state = {
-        'answeredAll' : false
-    },
-    channel;
-
     if (window.parent !== window) {
         channel = Channel.build({
             window: window.parent,
@@ -58,22 +58,18 @@ var crswd = (function($) {
         // If getState and setState are used, then the Python grader also gets
         // access to the return value of getState and can choose it instead to
         // grade.
-        console.log("getGrade");
-        return JSON.stringify(state['answeredAll']);
+        return JSON.stringify(stateJson['answeredAll']);
     }
 
     function getState() {
         console.log("getState");
-        //state["answeredAll"] = true;
+        stateJson["answeredAll"] = true;
         puzzleData.forEach(function (item, index) {
-            console.log(item['answer']);
             if (helder.util.checkSolved(item['answer']) == false) {
-                console.log("false");
-                //state["answeredAll"] = false;
+                stateJson["answeredAll"] = false;
             }
         });
-        console.log("state answeredAll: " + state['answeredAll']);
-        return JSON.stringify(state);
+        return JSON.stringify(stateJson);
     }
 
     // This function will be called with 1 argument when JSChannel is not used,
