@@ -23,11 +23,13 @@
 			var puzz = {}; // put data array in object literal to namespace it into safety
 			puzz.data = entryData;
 			
+
 			// append clues markup after puzzle wrapper div
 			// This should be moved into a configuration object
 			this.after('<div id="puzzle-clues"><h2>Across</h2><ol id="across"></ol><h2>Down</h2><ol id="down"></ol></div>');
 			
 			// initialize some variables
+			var testStr='my test words';
 			var tbl = ['<table id="puzzle">'],
 			    puzzEl = this,
 				clues = $('#puzzle-clues'),
@@ -99,7 +101,7 @@
 							return false;
 						} else {
 							
-							console.log('input keyup: '+solvedToggle);
+							//console.log('input keyup: '+solvedToggle);
 							
 							puzInit.checkAnswer(e);
 
@@ -319,7 +321,6 @@
 
 				}				
 
-
 			}; // end puzInit object
 			
 
@@ -521,7 +522,7 @@
 							activePosition = classes[0].split('-')[1];						
 						}
 						
-						console.log('getActivePositionFromClassGroup activePosition: '+activePosition);
+						//console.log('getActivePositionFromClassGroup activePosition: '+activePosition);
 						
 				},
 				
@@ -532,6 +533,7 @@
 						}
 
 					}
+					return false;
 				},
 				
 				getSkips: function(position) {
@@ -544,9 +546,12 @@
 				}
 				
 			}; // end util object
-				
+
 			puzInit.init();
-							
+
+			this.util = util;
+			this.testStr = testStr;
+			return this;		
 	}
-	
+
 })(jQuery);
